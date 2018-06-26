@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "domutils": "^1.7.0",
+    "htmlparser2": "^3.9.2",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0"
