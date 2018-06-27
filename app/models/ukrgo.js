@@ -2,12 +2,14 @@ const htmlparser = require("htmlparser2");
 const DOM = require("./domData");
 
 
+const domain = 'http://kiev.ukrgo.com/';
+
 const query = (params) => {
   let query = [];
   for(let key in params){
     query.push(`${key}=${params[key]}`);
   }
-  return 'http://kiev.ukrgo.com/search.php?' + query.join('&');
+  return domain + 'search.php?' + query.join('&');
 }
 
 
@@ -31,7 +33,7 @@ const getPost = (el) => {
   post.title = titleEl ? DOM(titleEl).text().trim() : '';
 
   let imgEl = DOM(el.children).findOne({ tag: "img" });
-  post.img = imgEl ? imgEl.attribs.src : '';
+  post.img = imgEl ? domain + imgEl.attribs.src : '';
 
   return post;
 }
