@@ -24,7 +24,7 @@ const getPosts = (el) => {
 }
 
 
-const getPost = (el) => {
+const getPostItem = (el) => {
   const post = {};
   let dateEl = DOM(el.children).findOne({ tag: "span", attrs: { style: "font-size: 9px;"} });
   let dateStr = dateEl ? DOM(dateEl).text().trim().replace("\n", ' ') : '';
@@ -40,23 +40,48 @@ const getPost = (el) => {
   return post;
 }
 
-const parse = (html) => {
-  return new Promise( (resolve, reject) => {
+const getPost = (dom) => {
+  const post = {};
+  let imagesEl = DOM(dom).findAll({ tag: "img", attrs: { class: "image_galary"} });
+  post.images = imagesEl.map((img) => {
+    return img ? domain + img.attribs.src : '';
+  });
 
+  let showPhoneDiv = DOM(dom).findOne({ attrs: { id: "post-phones-show-div"} });
+
+  if(showPhoneDiv) {
+    const showPhonesWithDigits = (i, s) => {i, s};
+    let showPhoneBtn = DOM(showPhoneDiv.children).findOne({ tag: 'input' });
+    post.phoneParams = eval('(function(){return ' + showPhoneBtn.attribs.onclick + '})()');
+  }
+
+  console.log(post)
+  return post;
+}
+
+
+const parseHtml = (html) => {
+  return new Promise( (resolve, reject) => {
     const handler = new htmlparser.DomHandler( (error, dom) => {
       if (error){
         reject(error)
       }else{
-        let postsDom = getPosts(dom);
-        resolve(postsDom.map(getPost))
+        resolve(dom)
       }
     });
 
     const parser = new htmlparser.Parser(handler);
     parser.write(html);
     parser.end();
-
-  })
+  });
 }
 
-module.exports = { query, parse };
+const parse = (html) => {
+  return parseHtml(html).then(dom => getPosts(dom).map(getPostItem));
+}
+
+const parsePost = (html) => {
+  return parseHtml(html).then(dom => getPost(dom));
+}
+
+module.exports = { query, parse, parsePost };
