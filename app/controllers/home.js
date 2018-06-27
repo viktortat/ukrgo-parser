@@ -1,7 +1,6 @@
 "use strict";
 
-const axios = require("axios");
-const UkrGo = require("./../models/ukrgo");
+const Ukrgo = require("./../ukrgo");
 
 
 let params = {
@@ -12,14 +11,10 @@ let params = {
 }
 
 
-const timeoutRequest = (url, index) => {
+const timeout = (post) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      axios.get(url)
-        .then(resolve, reject)
-        .then(() => {
-          console.log(index);
-        })
+      axios.get(url).then(resolve, reject);
     }, Math.random()*2000 );
   })
 }
@@ -27,17 +22,19 @@ const timeoutRequest = (url, index) => {
 
 exports.test = async (ctx) => {
   const data = {};
-  return axios.get(UkrGo.query(params))
-    .then(res => UkrGo.parse(res.data))
-    .then(posts => {
-      posts = posts.slice(1, 2);
-      return Promise.all(posts.map((post, index) => timeoutRequest(post.url, index)))
+  return Ukrgo.find(params)
+    .then((posts) => {
+      posts = posts.slice(6, 8);
+      return Promise.all(posts.map((post) => {
+        data[post.id] = post;
+        return Ukrgo.getOne(post.url);
+      }));
     })
-    .then( res => {
-      return res.map((r) => UkrGo.parsePost(r.data))
-    })
-    .then( res => {
-      console.log(res)
+    .then( posts => {
+      for(let post of posts){
+        if(data[post.id]) data[post.id] = Object.assign(data[post.id], post);
+      }
+      return data;
     })
     .then(ctx.res.ok, ctx.res.error);
 }

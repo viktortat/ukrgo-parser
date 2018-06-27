@@ -33,26 +33,4 @@ const DOM = function (data) {
   }
 }
 
-class DomData {
-  constructor(data) {
-    this.data = data;
-  }
-
-  findAll(selector) {
-    return domutils.findAll(find(selector), this.data, true);
-  }
-
-  findOne(selector) {
-    return domutils.findOne(find(selector), this.data);
-  }
-
-  text() {
-    return domutils.getText(this.data);
-  }
-
-  html() {
-    return domutils.getInnerHTML(this.data);
-  }
-}
-
 module.exports = DOM;
