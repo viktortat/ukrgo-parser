@@ -1,4 +1,5 @@
 const htmlparser = require("htmlparser2");
+const moment = require("moment");
 const DOM = require("./domData");
 
 
@@ -26,10 +27,11 @@ const getPosts = (el) => {
 const getPost = (el) => {
   const post = {};
   let dateEl = DOM(el.children).findOne({ tag: "span", attrs: { style: "font-size: 9px;"} });
-  post.date = dateEl ? DOM(dateEl).text() : '';
+  let dateStr = dateEl ? DOM(dateEl).text().trim().replace("\n", ' ') : '';
+  post.date = dateStr ? moment(dateStr, 'DD-MM-YYYY hh:mm').format() : '';
 
   let titleEl = DOM(el.children).findOne({ tag: "a", attrs: { class: "link"} });
-  post.href = titleEl ? titleEl.attribs.href : '';
+  post.url = titleEl ? titleEl.attribs.href : '';
   post.title = titleEl ? DOM(titleEl).text().trim() : '';
 
   let imgEl = DOM(el.children).findOne({ tag: "img" });
