@@ -20,7 +20,7 @@ const timeout = (post) => {
 }
 
 
-exports.test = async (ctx) => {
+exports.search = async (ctx) => {
   const data = {};
   return Ukrgo.find(params)
     .then((posts) => {

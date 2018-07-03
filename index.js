@@ -3,6 +3,7 @@
 const axios = require('axios');
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
+const staticServer = require('koa-static-server');
 const responseHandler = require('./app/middlewares/responseHandler');
 const errorHandler = require('./app/middlewares/errorHandler');
 const router = require('./app/routes');
@@ -17,6 +18,7 @@ app.use(
     jsonLimit: '10mb'
   })
 );
+app.use(staticServer({rootDir: 'assets'}));
 app.use(responseHandler());
 app.use(errorHandler());
 
