@@ -6,7 +6,7 @@ import Post from '@/pages/post'
 export default new Router({
   routes: [
     {
-      path: '/posts',
+      path: '/',
       name: 'posts',
       component: Posts
     },

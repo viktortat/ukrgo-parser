@@ -18,7 +18,7 @@ app.use(
     jsonLimit: '10mb'
   })
 );
-app.use(staticServer({rootDir: 'assets'}));
+app.use(staticServer({rootDir: 'public', rootPath: '/' }));
 app.use(responseHandler());
 app.use(errorHandler());
 

@@ -3,9 +3,11 @@ const path = require('path');
 const autoprefixer = require('autoprefixer');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 
 module.exports = {
+  mode: 'development',
   entry: {
     bundle: './client/app/main.js',
   },
@@ -58,6 +60,7 @@ module.exports = {
     new ExtractTextPlugin('../css/styles.css', {
       allChunks: true
     }),
+    new VueLoaderPlugin(),
     new webpack.LoaderOptionsPlugin({
       options: {
         postcss: [
