@@ -57,10 +57,10 @@ module.exports = {
     ]
   },
   plugins: [
+    new VueLoaderPlugin(),
     new ExtractTextPlugin('../css/styles.css', {
       allChunks: true
     }),
-    new VueLoaderPlugin(),
     new webpack.LoaderOptionsPlugin({
       options: {
         postcss: [
